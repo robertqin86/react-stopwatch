@@ -37,12 +37,21 @@ class ReactStopWatch extends PureComponent<Props, State> {
     };
   }
 
-  componentWillReceiveProps(): void {
+  // eslint-disable-next-line camelcase,no-unused-vars
+  UNSAFE_componentWillReceiveProps(nextProps, nextContext): void {
     this.intervalId = setInterval(() => {}, Number.MAX_VALUE);
     this.setState({
       stateHours: 0,
       stateMinutes: 0,
       stateSeconds: 0,
+    }, () => {
+      const { autoStart } = nextProps;
+      // eslint-disable-next-line react/destructuring-assignment
+      if (autoStart && !this.props.autoStart) {
+        this.timer();
+      } else {
+        this.stopToCount();
+      }
     });
   }
 
